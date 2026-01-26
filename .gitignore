@@ -1,20 +1,64 @@
-# Entorno virtual
+##############################################
+# PYTHON / VIRTUAL ENVIRONMENTS
+##############################################
 venv/
+tfm/
+*.pyc
+__pycache__/
 
-# Datos
-data/raw/
-data/processed/
-data/external/
 
-# MLflow tracking folders
+##############################################
+# ENVIRONMENT VARIABLES (NEVER VERSION)
+##############################################
+.env
+
+
+##############################################
+# DATA DIRECTORIES (Handled by DVC)
+##############################################
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/*.dvc
+
+data/processed/*
+!data/processed/.gitkeep
+!data/processed/*.dvc
+
+##############################################
+# MODEL ARTIFACTS (Handled by DVC)
+##############################################
+models/*
+!models/.gitkeep
+
+
+##############################################
+# MLFLOW EXPERIMENT LOGS
+##############################################
 mlruns/
 
-# Python cache
-__pycache__/
-*.pyc
 
-# Jupyter
+##############################################
+# DVC INTERNAL CACHE (Do NOT track)
+##############################################
+.dvc/cache/
+.dvc/tmp/
+
+
+##############################################
+# JUPYTER NOTEBOOKS CHECKPOINTS
+##############################################
 .ipynb_checkpoints/
 
-# Logs
+
+##############################################
+# LOGS
+##############################################
 logs/
+!logs/.gitkeep
+
+
+##############################################
+# OS / EDITOR JUNK FILES
+##############################################
+.DS_Store
+Thumbs.db
