@@ -16,7 +16,7 @@ def get_env(name, default=None, required=False):
     value = os.getenv(name, default)
 
     if required and value is None:
-        raise ValueError(f"❌ Missing required environment variable: {name}")
+        raise ValueError(f"Missing required environment variable: {name}")
 
     return value
 
