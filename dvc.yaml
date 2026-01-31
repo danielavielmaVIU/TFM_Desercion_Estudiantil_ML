@@ -1,0 +1,11 @@
+stages:
+  eda_inicial:
+    cmd: python src/stages/01_eda_inicial.py
+    deps:
+      - src/stages/01_eda_inicial.py
+      - src/data/clean_columns.py
+      - src/utils/constants.py
+      - data/raw/data.csv
+    outs:
+      - outputs/figures/EDA
+      - outputs/tables
