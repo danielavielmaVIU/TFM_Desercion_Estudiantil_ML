@@ -1,11 +1,32 @@
 stages:
   eda_inicial:
-    cmd: python src/stages/01_eda_inicial.py
+    cmd: python src/pipelines/01_eda_inicial.py
     deps:
-      - src/stages/01_eda_inicial.py
+      - src/pipelines/01_eda_inicial.py
       - src/data/clean_columns.py
       - src/utils/constants.py
       - data/raw/data.csv
     outs:
       - outputs/figures/EDA
-      - outputs/tables
+      - outputs/tables/EDA
+
+  
+  calidad_datos:
+    cmd: python src/pipelines/02_analisis_calidad_datos.py
+    deps:
+      - src/pipelines/02_analisis_calidad_datos.py
+      - src/utils/constants.py
+      - data/raw/data.csv
+    outs:
+      - outputs/tables/calidad_datos
+
+
+  preprocesamiento:
+    cmd: python src/pipelines/03_preprocesamiento.py
+    deps:
+      - data/raw/data.csv
+      - src/data/clean_columns.py
+      - src/utils/constants.py
+    outs:
+      - data/processed/preprocessed_data.csv
+      - outputs/figures/preprocesamiento/01_distribucion_target_binario.png
