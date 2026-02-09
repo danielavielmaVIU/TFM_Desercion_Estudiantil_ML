@@ -135,29 +135,6 @@ def crear_application_mode_risk(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def crear_is_over_23_entry(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Crea variable binaria para estudiantes que ingresaron como "Mayor de 23 años".
-    
-    Justificación: Los estudiantes que ingresan por la vía 'Mayor de 23 años' 
-    (código 39) presentan una tasa de deserción del 55.4%, casi triple que los 
-    estudiantes de 1ra fase general (20.2%). Este grupo representa el 17.7% del 
-    dataset (785 estudiantes).
-    
-    Parámetros
-    ----------
-    df : pd.DataFrame
-        DataFrame con columna 'application_mode'.
-    
-    Retorna
-    -------
-    pd.DataFrame
-        DataFrame con nueva columna 'is_over_23_entry'.
-    """
-    df['is_over_23_entry'] = (df['application_mode'] == 39).astype(int)
-    return df
-
-
 def agrupar_previous_qualification_riesgo(x: int) -> str:
     """
     Agrupa cualificación previa en categorías por nivel de riesgo.
@@ -300,35 +277,6 @@ def crear_parent_occupation_levels(df: pd.DataFrame) -> pd.DataFrame:
     df['fathers_occupation_level'] = df['fathers_occupation'].apply(
         agrupar_parent_occupation
     )
-    return df
-
-
-def crear_has_unknown_parent_info(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Crea variable indicando si hay información desconocida de los padres.
-    
-    Justificación: 
-    - Cuando mothers/fathers_qualification = 34 ('Desconocido'), la tasa 
-      de deserción está sobre el 70%.
-    - Cuando mothers/fathers_occupation = 90, 99 o 0, la tasa de deserción 
-      está entre el 64% y 77%.
-    
-    Parámetros
-    ----------
-    df : pd.DataFrame
-        DataFrame con columnas de cualificación y ocupación de padres.
-    
-    Retorna
-    -------
-    pd.DataFrame
-        DataFrame con nueva columna 'has_unknown_parent_info'.
-    """
-    df['has_unknown_parent_info'] = (
-        (df['mothers_qualification'] == 34) |
-        (df['fathers_qualification'] == 34) |
-        (df['mothers_occupation'].isin([90, 99, 0])) |
-        (df['fathers_occupation'].isin([90, 99, 0]))
-    ).astype(int)
     return df
 
 
@@ -560,32 +508,22 @@ def preprocesar_datos(
     if verbose:
         print("Creada: application_mode_risk")
     
-    # 2.3 Mayor de 23 años → is_over_23_entry
-    df = crear_is_over_23_entry(df)
-    if verbose:
-        print("Creada: is_over_23_entry")
-    
-    # 2.4 Cualificación previa → previous_qualification_risk
+    # 2.3 Cualificación previa → previous_qualification_risk
     df = crear_previous_qualification_risk(df)
     if verbose:
         print("Creada: previous_qualification_risk")
     
-    # 2.5 Educación de padres → *_qualification_level
+    # 2.4 Educación de padres → *_qualification_level
     df = crear_parent_qualification_levels(df)
     if verbose:
         print("Creadas: mothers_qualification_level, fathers_qualification_level")
     
-    # 2.6 Ocupación de padres → *_occupation_level
+    # 2.5 Ocupación de padres → *_occupation_level
     df = crear_parent_occupation_levels(df)
     if verbose:
         print("Creadas: mothers_occupation_level, fathers_occupation_level")
     
-    # 2.7 Información desconocida de padres → has_unknown_parent_info
-    df = crear_has_unknown_parent_info(df)
-    if verbose:
-        print("Creada: has_unknown_parent_info")
-    
-    # 2.8 Target binario
+    # 2.7 Target binario
     df = crear_target_binario(df)
     if verbose:
         print("Creada: target_binario")
