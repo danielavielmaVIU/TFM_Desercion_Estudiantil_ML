@@ -205,8 +205,8 @@ stages:
     deps:
     - path: data/processed/preprocessed_data.csv
       hash: md5
-      md5: d926868d85478678001ee06a505b2902
-      size: 772793
+      md5: 10df7302ce95b4a695ad7bd1a226d917
+      size: 755056
     - path: outputs/models/cv_summary_entrenamiento.csv
       hash: md5
       md5: 40f23b444452b8b9210f1e745338363a
