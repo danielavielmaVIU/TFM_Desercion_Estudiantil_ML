@@ -1,0 +1,227 @@
+schema: '2.0'
+stages:
+  eda_inicial:
+    cmd: python src/pipelines/1_eda_inicial.py
+    deps:
+    - path: data/raw/data.csv
+      hash: md5
+      md5: ee29c9ee9ea60654b5bb0a161c0a473d
+      size: 533230
+    - path: src/data/clean_columns.py
+      hash: md5
+      md5: 9ccd3ae6869fc2d37495c9ef3c00cad4
+      size: 1697
+    - path: src/pipelines/1_eda_inicial.py
+      hash: md5
+      md5: 10051880c14f4fd97575984d3f95f968
+      size: 20561
+    - path: src/utils/constants.py
+      hash: md5
+      md5: 06e0ac18557d1e6ab0910fac45ef77b6
+      size: 15234
+    outs:
+    - path: outputs/figures/EDA
+      hash: md5
+      md5: 302021318273d5f9e11934b15cb19820.dir
+      size: 5642763
+      nfiles: 27
+    - path: outputs/tables/EDA
+      hash: md5
+      md5: 53bd40c629942b6a88466e5d2d7f3a94.dir
+      size: 22382
+      nfiles: 6
+  calidad_datos:
+    cmd: python src/pipelines/2_analisis_calidad_datos.py
+    deps:
+    - path: data/raw/data.csv
+      hash: md5
+      md5: ee29c9ee9ea60654b5bb0a161c0a473d
+      size: 533230
+    - path: src/pipelines/2_analisis_calidad_datos.py
+      hash: md5
+      md5: 2eb856cb92ff7b7fdf8a7bb2d972dce0
+      size: 10537
+    - path: src/utils/constants.py
+      hash: md5
+      md5: 06e0ac18557d1e6ab0910fac45ef77b6
+      size: 15234
+    outs:
+    - path: outputs/tables/calidad_datos
+      hash: md5
+      md5: d8c065328259b3edc07cbd74c7cbbe65.dir
+      size: 2597
+      nfiles: 1
+  preprocesamiento:
+    cmd: python src/pipelines/3_preprocesamiento.py
+    deps:
+    - path: data/raw/data.csv
+      hash: md5
+      md5: ee29c9ee9ea60654b5bb0a161c0a473d
+      size: 533230
+    - path: src/data/clean_columns.py
+      hash: md5
+      md5: 9ccd3ae6869fc2d37495c9ef3c00cad4
+      size: 1697
+    - path: src/utils/constants.py
+      hash: md5
+      md5: 06e0ac18557d1e6ab0910fac45ef77b6
+      size: 15234
+    outs:
+    - path: data/processed/preprocessed_data.csv
+      hash: md5
+      md5: 10df7302ce95b4a695ad7bd1a226d917
+      size: 755056
+    - path: outputs/figures/preprocesamiento/01_distribucion_target_binario.png
+      hash: md5
+      md5: 750f5e508761d851b1724c921fe20fdd
+      size: 67995
+  modelo_baseline_RL:
+    cmd: python src/pipelines/4.1_modelo_baseline_RL_train.py
+    deps:
+    - path: data/processed/preprocessed_data.csv
+      hash: md5
+      md5: 10df7302ce95b4a695ad7bd1a226d917
+      size: 755056
+    - path: src/pipelines/4.1_modelo_baseline_RL_train.py
+      hash: md5
+      md5: 0435d088089e98d46a98606cc9430b20
+      size: 31612
+    outs:
+    - path: outputs/figures/modelado/baseline_RL
+      hash: md5
+      md5: 68b667c039e31a6e5060221a36777b53.dir
+      size: 810341
+      nfiles: 6
+    - path: outputs/models/baseline_RL/cv_summary_RL.csv
+      hash: md5
+      md5: d79e9b7facbbbc38b2952f79341682de
+      size: 2888
+  modelo_RF:
+    cmd: python src/pipelines/4.2_modelo_RF_train.py
+    deps:
+    - path: data/processed/preprocessed_data.csv
+      hash: md5
+      md5: 10df7302ce95b4a695ad7bd1a226d917
+      size: 755056
+    - path: outputs/models/baseline_RL/cv_summary_RL.csv
+      hash: md5
+      md5: d79e9b7facbbbc38b2952f79341682de
+      size: 2888
+    - path: src/pipelines/4.2_modelo_RF_train.py
+      hash: md5
+      md5: 8313601ce0b8b56fc70adb652236fa30
+      size: 32732
+    outs:
+    - path: outputs/figures/modelado/RF
+      hash: md5
+      md5: ba462e0479fd1e3417b131ec56925636.dir
+      size: 514707
+      nfiles: 6
+    - path: outputs/models/RF/cv_summary_RF.csv
+      hash: md5
+      md5: 013eef3b900c57c53facd42fdf47db08
+      size: 2439
+    - path: outputs/models/cv_summary_entrenamiento.csv
+      hash: md5
+      md5: c6c1818da1b5773aaf616ba05c419ca7
+      size: 4761
+  modelado_XGBoost:
+    cmd: python src/pipelines/4.3_modelado_XGBoost_train.py
+    deps:
+    - path: data/processed/preprocessed_data.csv
+      hash: md5
+      md5: d926868d85478678001ee06a505b2902
+      size: 772793
+    - path: outputs/models/cv_summary_entrenamiento.csv
+      hash: md5
+      md5: d88dd1136ae707489772b3b85d0fbc23
+      size: 6986
+    - path: src/pipelines/4.3_modelado_XGBoost_train.py
+      hash: md5
+      md5: bb7579d9af196ad7945fa4d35769ce46
+      size: 31724
+    outs:
+    - path: outputs/figures/modelado/XGBoost
+      hash: md5
+      md5: 0a38eab49a8b9c6566b74f38a5f33d6f.dir
+      size: 736669
+      nfiles: 6
+    - path: outputs/models/XGBoost/cv_summary_XGBoost.csv
+      hash: md5
+      md5: be451efdbd046b1545be84f1e5bc0269
+      size: 2720
+  modelo_XGBoost:
+    cmd: python src/pipelines/4.3_modelado_XGBoost_train.py
+    deps:
+    - path: data/processed/preprocessed_data.csv
+      hash: md5
+      md5: 10df7302ce95b4a695ad7bd1a226d917
+      size: 755056
+    - path: outputs/models/cv_summary_entrenamiento.csv
+      hash: md5
+      md5: d88dd1136ae707489772b3b85d0fbc23
+      size: 6986
+    - path: src/pipelines/4.3_modelado_XGBoost_train.py
+      hash: md5
+      md5: bb7579d9af196ad7945fa4d35769ce46
+      size: 31724
+    outs:
+    - path: outputs/figures/modelado/XGBoost
+      hash: md5
+      md5: 0a38eab49a8b9c6566b74f38a5f33d6f.dir
+      size: 736669
+      nfiles: 6
+    - path: outputs/models/XGBoost/cv_summary_XGBoost.csv
+      hash: md5
+      md5: be451efdbd046b1545be84f1e5bc0269
+      size: 2720
+  modelo_LightGBM:
+    cmd: python src/pipelines/4.4_modelado_LightGBM_train.py
+    deps:
+    - path: data/processed/preprocessed_data.csv
+      hash: md5
+      md5: 10df7302ce95b4a695ad7bd1a226d917
+      size: 755056
+    - path: outputs/models/cv_summary_entrenamiento.csv
+      hash: md5
+      md5: aca22a721a9960f765d40da8d192b932
+      size: 9345
+    - path: src/pipelines/4.4_modelado_LightGBM_train.py
+      hash: md5
+      md5: c7c512a5f53fc3ba4c8ff2891023ea84
+      size: 32454
+    outs:
+    - path: outputs/figures/modelado/LightGBM
+      hash: md5
+      md5: 02cb518a8dbaad6a6178109147fdb70b.dir
+      size: 740965
+      nfiles: 6
+    - path: outputs/models/LightGBM/cv_summary_LightGBM.csv
+      hash: md5
+      md5: 760e7931e05eb1f8aaefffac3d72db3f
+      size: 2840
+  modelado_CatBoost:
+    cmd: python src/pipelines/4.5_modelado_CatBoost_train.py
+    deps:
+    - path: data/processed/preprocessed_data.csv
+      hash: md5
+      md5: d926868d85478678001ee06a505b2902
+      size: 772793
+    - path: outputs/models/cv_summary_entrenamiento.csv
+      hash: md5
+      md5: 40f23b444452b8b9210f1e745338363a
+      size: 11705
+    - path: src/pipelines/4.5_modelado_CatBoost_train.py
+      hash: md5
+      md5: 329e818c44fa86674f3635379f4e0c6b
+      size: 31978
+    outs:
+    - path: outputs/figures/modelado/CatBoost
+      hash: md5
+      md5: 4c4e34448401e4695d8f79f7c0e5149b.dir
+      size: 770842
+      nfiles: 6
+    - path: outputs/models/CatBoost/cv_summary_CatBoost.csv
+      hash: md5
+      md5: 3a23bf4eb775399e658ca5a9935e7d2e
+      size: 2810

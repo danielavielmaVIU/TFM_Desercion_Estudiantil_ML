@@ -1,8 +1,8 @@
 stages:
   eda_inicial:
-    cmd: python src/pipelines/01_eda_inicial.py
+    cmd: python src/pipelines/1_eda_inicial.py
     deps:
-      - src/pipelines/01_eda_inicial.py
+      - src/pipelines/1_eda_inicial.py
       - src/data/clean_columns.py
       - src/utils/constants.py
       - data/raw/data.csv
@@ -12,9 +12,9 @@ stages:
 
   
   calidad_datos:
-    cmd: python src/pipelines/02_analisis_calidad_datos.py
+    cmd: python src/pipelines/2_analisis_calidad_datos.py
     deps:
-      - src/pipelines/02_analisis_calidad_datos.py
+      - src/pipelines/2_analisis_calidad_datos.py
       - src/utils/constants.py
       - data/raw/data.csv
     outs:
@@ -22,7 +22,7 @@ stages:
 
 
   preprocesamiento:
-    cmd: python src/pipelines/03_preprocesamiento.py
+    cmd: python src/pipelines/3_preprocesamiento.py
     deps:
       - data/raw/data.csv
       - src/data/clean_columns.py
@@ -30,3 +30,54 @@ stages:
     outs:
       - data/processed/preprocessed_data.csv
       - outputs/figures/preprocesamiento/01_distribucion_target_binario.png
+
+  
+  modelo_baseline_RL:
+    cmd: python src/pipelines/4.1_modelo_baseline_RL_train.py
+    deps:
+      - src/pipelines/4.1_modelo_baseline_RL_train.py
+      - data/processed/preprocessed_data.csv
+    outs:
+      - outputs/figures/modelado/baseline_RL
+      - outputs/models/baseline_RL/cv_summary_RL.csv
+
+  modelo_RF:
+    cmd: python src/pipelines/4.2_modelo_RF_train.py
+    deps:
+      - src/pipelines/4.2_modelo_RF_train.py
+      - data/processed/preprocessed_data.csv
+      - outputs/models/baseline_RL/cv_summary_RL.csv
+    outs:
+      - outputs/figures/modelado/RF
+      - outputs/models/RF/cv_summary_RF.csv
+      - outputs/models/cv_summary_entrenamiento.csv
+ 
+  modelo_XGBoost:
+    cmd: python src/pipelines/4.3_modelado_XGBoost_train.py
+    deps:
+      - src/pipelines/4.3_modelado_XGBoost_train.py
+      - data/processed/preprocessed_data.csv
+      - outputs/models/cv_summary_entrenamiento.csv
+    outs:
+      - outputs/figures/modelado/XGBoost
+      - outputs/models/XGBoost/cv_summary_XGBoost.csv
+
+  modelo_LightGBM:
+    cmd: python src/pipelines/4.4_modelado_LightGBM_train.py
+    deps:
+      - src/pipelines/4.4_modelado_LightGBM_train.py
+      - data/processed/preprocessed_data.csv
+      - outputs/models/cv_summary_entrenamiento.csv
+    outs:
+      - outputs/figures/modelado/LightGBM
+      - outputs/models/LightGBM/cv_summary_LightGBM.csv
+
+  modelado_CatBoost:
+    cmd: python src/pipelines/4.5_modelado_CatBoost_train.py
+    deps:
+      - src/pipelines/4.5_modelado_CatBoost_train.py
+      - data/processed/preprocessed_data.csv
+      - outputs/models/cv_summary_entrenamiento.csv
+    outs:
+      - outputs/figures/modelado/CatBoost
+      - outputs/models/CatBoost/cv_summary_CatBoost.csv
