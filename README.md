@@ -25,7 +25,7 @@ Específicos:
 
 Desarrollar un **sistema predictivo reproducible** que:
 1. Anticipe el riesgo de abandono estudiantil en diferentes ventanas temporales (T0, T1, T2).
-2. Compare múltiples algoritmos supervisados (Logistic Regression, Random Forest, XGBoost, LightGBM, CatBoost, SVM).
+2. Compare múltiples algoritmos supervisados (Logistic Regression, Random Forest, XGBoost, LightGBM, CatBoost).
 3. Genere interpretabilidad mediante valores **SHAP**, permitiendo identificar factores clave asociados al abandono.
 4. Mantenga trazabilidad completa de experimentos usando **MLflow**.
 5. Gestione datos y artefactos de forma controlada mediante **DVC** (modo local).
@@ -54,8 +54,6 @@ El proyecto sigue las seis fases del estándar internacional de minería de dato
 4. Modelado  
 5. Evaluación  
 6. Despliegue (documental)
-
-Cada fase está documentada en el directorio `reports/` y en GitHub Projects.
 
 ---
 
@@ -104,16 +102,6 @@ TFM_Desercion_Estudiantil_ML/
 
 ---
 
-## Estado Actual del Proyecto
-
-- ✔ **Fase 1 – Comprensión del negocio** completada  
-- ✔ Dataset integrado y versionado con DVC  
-- ✔ Entorno virtual configurado  
-- ✔ Estructura MLOps creada  
-- ➤ Fase 2 en progreso: descripción, EDA y verificación de la calidad del dato  
-
----
-
 ## Gestión del Proyecto
 
 El avance y planificación del TFM se gestiona mediante **GitHub Projects** (tablero Kanban):
@@ -121,17 +109,7 @@ El avance y planificación del TFM se gestiona mediante **GitHub Projects** (tab
 
 ---
 
-## Próximos Pasos
-
-- Completar la Fase 2 (EDA + calidad de datos).  
-- Diseñar el pipeline de preprocesamiento.  
-- Entrenar los modelos iniciales y registrar experimentos.  
-- Implementar interpretabilidad SHAP por fase temporal.  
-- Evaluar resultados y preparar conclusiones del TFM.
-
----
-
 ## Autor
 
-Proyecto desarrollado por **[Tu nombre]**,  
+Proyecto desarrollado por **Maria Vielma**,  
 Máster en Big Data y Ciencia de Datos — Universidad Internacional de Valencia (VIU).
